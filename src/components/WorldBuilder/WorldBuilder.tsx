@@ -62,6 +62,23 @@ const WorldBuilder: React.FC = () => {
         return context;
     }
 
+    const getLocationNameAIContext = (): string => {
+        let context = getGenericAIContext();
+        if(storyData.world.locations != null && storyData.world.locations.length > 0){
+            context += `Current locations are ${storyData.world.locations.map(x => x.name).join(", ")}.\n`;
+        }
+        return context;
+    }
+
+    const getLocationDescriptionAIContext = (index: number): string => {
+        let context = getLocationNameAIContext();
+        if(storyData.world.locations == null || storyData.world.locations.length <= index){
+            throw new Error(`Invalid index ${index} did not exist on locations.`);
+        }
+        context += `The new location name is "${storyData.world.locations[index].name}".\n`;
+        return context;
+    }
+
     return (
         <div className={styles.worldBuilder}>
             <h2>World Building</h2>
@@ -134,6 +151,14 @@ const WorldBuilder: React.FC = () => {
                             placeholder="Location Name"
                             className={styles.locationName}
                         />
+                        <AIHelperButton
+                            promptContext={getLocationNameAIContext()}
+                            suggestionPrefix="Generate name suggestions for a new location."
+                            numSuggestions={5}
+                            wordLimit={5}
+                            onSuggestion={(suggestion) => handleLocationChange(index, 'name', suggestion)}
+                            buttonText="Suggest Name"
+                        />
                         <textarea
                             value={loc.description}
                             onChange={(e) => handleLocationChange(index, 'description', e.target.value)}
@@ -141,12 +166,19 @@ const WorldBuilder: React.FC = () => {
                             rows={2}
                              className={styles.locationDesc}
                         />
+                        <AIHelperButton
+                            promptContext={getLocationDescriptionAIContext(index)}
+                            suggestionPrefix="Generate description suggestions for the new location."
+                            onSuggestion={(suggestion) => handleLocationChange(index, 'description', suggestion)}
+                            buttonText="Suggest Description"
+                            disabled={!loc.name}
+                        />
                         <button
                              onClick={() => handleRemoveLocation(index)}
                              className={styles.removeLocationButton}
                              title="Remove Location"
                         >
-                            × {/* Simple 'x' delete icon */}
+                            × 
                         </button>
                     </div>
                 ))}
@@ -154,16 +186,6 @@ const WorldBuilder: React.FC = () => {
                     + Add Location
                 </button>
             </div>
-
-             {/* Add more fields as needed (History, Factions, Culture etc.) */}
-             {/* Example:
-             <div className={styles.formGroup}>
-                <label htmlFor="history">Brief History:</label>
-                <textarea id="history" name="history" ... />
-                <AIHelperButton ... />
-             </div>
-             */}
-
         </div>
     );
 };

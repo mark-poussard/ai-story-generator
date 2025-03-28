@@ -67,14 +67,14 @@ export const useGeminiAI = (apiKey: string | undefined) => {
     }, [genAI]);
 
     const generateContent = useCallback(async (prompt: string): Promise<string[] | null> => {
-        prompt += `\nFormat your response as a JSON array of strings. Ensure the output is ONLY the JSON array. Example: ["suggestion 1", "suggestion 2"]`
+        prompt += `Format your response as a JSON array of strings. Ensure the output is ONLY the JSON array. Example: ["suggestion 1", "suggestion 2"]\n`
         if (!model) {
             setError("AI Model not initialized. Check your API Key.");
             return null;
         }
         setLoading(true);
         setError(null);
-        console.log("Sending prompt to AI:", prompt); // For debugging
+        console.log("Sending prompt to AI:\n", prompt); // For debugging
 
         try {
             const result = await model.generateContent(prompt);

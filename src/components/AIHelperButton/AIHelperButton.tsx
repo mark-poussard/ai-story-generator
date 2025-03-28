@@ -11,6 +11,7 @@ interface AIHelperButtonProps {
     suggestionPrefix?: string;
     numSuggestions?: number;
     modalTitle?: string;
+    wordLimit?: number;
 }
 
 const AIHelperButton: React.FC<AIHelperButtonProps> = ({
@@ -18,9 +19,10 @@ const AIHelperButton: React.FC<AIHelperButtonProps> = ({
     onSuggestion,
     buttonText = "Get AI Suggestions",
     disabled = false,
-    suggestionPrefix = "Generate creative suggestions based on this context: ",
+    suggestionPrefix = "Generate creative suggestions based on the below context",
     numSuggestions = 3,
-    modalTitle = "AI Suggestions"
+    modalTitle = "AI Suggestions",
+    wordLimit = undefined
 }) => {
     const { generateSuggestions, isAILoading: contextIsLoading, aiError: contextAiError } = useStoryContext();
 
@@ -53,14 +55,15 @@ const AIHelperButton: React.FC<AIHelperButtonProps> = ({
              setIsRefreshing(false); // Ensure refresh state is off
         }
 
-        // --- Modify prompt slightly for refresh to encourage different results ---
         const refreshInstructionPart = isRefresh
-            ? `\n\nPlease provide ${numSuggestions} *different* or *alternative* distinct suggestion${numSuggestions > 1 ? 's' : ''}`
-            : `\n\nPlease provide ${numSuggestions} distinct suggestion${numSuggestions > 1 ? 's' : ''}`;
-        const jsonInstruction = `${refreshInstructionPart} formatted as a JSON array of strings. Ensure the output is ONLY the JSON array. Example: ["suggestion 1", "suggestion 2"]`;
-        // ---
+            ? `Please provide ${numSuggestions} *different* or *alternative* distinct suggestion${numSuggestions > 1 ? 's' : ''}\n`
+            : `Please provide ${numSuggestions} distinct suggestion${numSuggestions > 1 ? 's' : ''}\n`;
 
-        const fullPrompt = `${suggestionPrefix}\n\nContext:\n${promptContext}\n${jsonInstruction}`;
+        const wordLimitPart = wordLimit
+            ? `Limit the number of output words for each suggestion to ${wordLimit} words maximum.\n`
+            : ``;
+
+        const fullPrompt = `${suggestionPrefix}\n\nContext:\n${promptContext}\n${refreshInstructionPart}${wordLimitPart}`;
 
         const suggestions = await generateSuggestions(fullPrompt);
         setLoading(false);

@@ -43,33 +43,28 @@ const CharacterBuilder: React.FC = () => {
     };
 
     const getGenericAIContext = (): string => {
-        return `Current story genre: ${storyData.genre}. Summary: ${storyData.briefSummary || 'Not specified'}.\n`;
+        let context = `Current story genre: ${storyData.genre}.\nSummary: ${storyData.briefSummary || 'Not specified'}.\n`
+        if(storyData.characters.length > 0) {
+            context += `Current characters : ${storyData.characters.map(c => `${c.name} (${c.role})`).join(', ')}.\n`;
+        }
+        return context;
     }
 
     const getNameAIContext = () => {
         let context = getGenericAIContext();
-        if(storyData.characters.length > 0) {
-            context += `Current characters are ${storyData.characters.map(c => `${c.name}`).join(', ')}.\n`;
-        }
-        return context + `Generate name suggestions for a new character.`;
+        return context;
     }
 
     const getRoleAIContext = () => {
         let context = getGenericAIContext();
-        const newCharacterNamePrompt = newCharacter.name ? `called ${newCharacter.name}` : undefined;
-        return context + `Generate role suggestions for a new character ${newCharacterNamePrompt || ''}, suggestions should be 5 words maximum.`;
+        return context + (newCharacter.name ? `The new character name is ${newCharacter.name}\n` : '');
     }
 
     const getDescriptionAIContext = () => {
         let context = getGenericAIContext();
-        if(storyData.characters.length > 0) {
-            context += `Characters involved: ${storyData.characters.map(c => `${c.name}: ${c.role}`).join(', ')}.\n`;
-        }
-
-        const newCharacterNamePrompt = newCharacter.name ? `named ${newCharacter.name}` : undefined;
-        const newCharacterRolePrompt = newCharacter.role ? `whose role is ${newCharacter.role}` : undefined;
-
-        return context + `Generate a character description for a new character ${newCharacterNamePrompt || ''} ${newCharacterRolePrompt || ''}.`;
+        context += `The new character name is ${newCharacter.name}.\n`;
+        context += `The new character's role is ${newCharacter.role}.\n`
+        return context;
     }
 
     return (
@@ -140,6 +135,8 @@ const CharacterBuilder: React.FC = () => {
                 />
                 <AIHelperButton
                     promptContext={getNameAIContext()}
+                    suggestionPrefix="Generate name suggestions for a new character."
+                    numSuggestions={5}
                     onSuggestion={(suggestion) => handleSuggestion(null, 'name', suggestion)}
                     buttonText="Suggest Name"
                 />
@@ -152,6 +149,9 @@ const CharacterBuilder: React.FC = () => {
                 />
                 <AIHelperButton
                     promptContext={getRoleAIContext()}
+                    suggestionPrefix="Generate role suggestions for the new character."
+                    wordLimit={5}
+                    numSuggestions={5}
                     onSuggestion={(suggestion) => handleSuggestion(null, 'role', suggestion)}
                     buttonText="Suggest Role"
                     disabled={!newCharacter.name} // Disable if no context
@@ -165,6 +165,7 @@ const CharacterBuilder: React.FC = () => {
                  />
                  <AIHelperButton
                      promptContext={getDescriptionAIContext()}
+                     suggestionPrefix="Generate a character description for the new character."
                      onSuggestion={(suggestion) => handleSuggestion(null, 'description', suggestion)}
                      buttonText="Suggest Description"
                      disabled={!newCharacter.name || !newCharacter.role} // Disable if no context

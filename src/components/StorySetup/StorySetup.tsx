@@ -24,17 +24,18 @@ const StorySetup: React.FC = () => {
      // --- AI Context Generation ---
     const getAIContext = (field: KnownSetupField): string => {
         let context = "Starting a new story.\n";
-        if (field !== 'genre' && storyData.genre) {
-            context += `Selected Genre: ${storyData.genre}\n`;
-        }
-        if (field !== 'storyType' && storyData.storyType) {
-            context += `Selected Type: ${storyData.storyType}\n`;
-        }
         if (field === 'briefSummary' && (storyData.genre || storyData.storyType)) {
              context += `Looking for a summary for a ${storyData.storyType} in the ${storyData.genre} genre.`
         }
-        // Could add more context later if needed
         return context;
+    }
+
+    const getGenreAIContext = () => {
+        return storyData.genre ? `Draft genre : ${storyData.genre}\n` : '';
+    }
+
+    const getBriefAIContext = () => {
+        return `Story genre : ${storyData.genre}\n` + (storyData.briefSummary ? `Current summary : ${storyData.briefSummary}.\n` : '');
     }
 
 
@@ -52,13 +53,11 @@ const StorySetup: React.FC = () => {
                     onChange={handleInputChange}
                 >
                     <option value="Short Story">Short Story</option>
-                    <option value="Novel Chapter">Novel Chapter</option>
-                    <option value="Flash Fiction">Flash Fiction</option>
-                    <option value="Screenplay Scene">Screenplay Scene</option>
-                    <option value="Fable">Fable</option>
-                    <option value="Other">Other</option> {/* Allow custom? */}
+                    <option value="Novel Chapter" disabled>Novel Chapter</option>
+                    <option value="Flash Fiction" disabled>Flash Fiction</option>
+                    <option value="Screenplay Scene" disabled>Screenplay Scene</option>
+                    <option value="Fable" disabled>Fable</option>
                 </select>
-                {/* AI helper for story type? Maybe suggest based on summary later? */}
             </div>
 
             <div className={styles.formGroup}>
@@ -72,10 +71,12 @@ const StorySetup: React.FC = () => {
                     placeholder="e.g., Fantasy, Sci-Fi, Mystery, Romance, Horror"
                  />
                   <AIHelperButton
-                     promptContext={getAIContext('genre')}
+                     promptContext={getGenreAIContext()}
                      onSuggestion={(suggestion) => handleSuggestion('genre', suggestion)}
                      buttonText="Suggest Genres"
-                     suggestionPrefix="Suggest 3-5 interesting genres or sub-genres, potentially blending ideas:"
+                     suggestionPrefix="Generate story genre suggestions"
+                     numSuggestions={5}
+                     wordLimit={5}
                  />
             </div>
 
@@ -90,10 +91,11 @@ const StorySetup: React.FC = () => {
                     rows={4}
                 />
                  <AIHelperButton
-                     promptContext={getAIContext('briefSummary')}
+                     promptContext={getBriefAIContext()}
                      onSuggestion={(suggestion) => handleSuggestion('briefSummary', suggestion)}
                      buttonText="Suggest Summary Ideas"
-                     suggestionPrefix="Generate 3 concise summary/logline ideas based on the selected genre and type:"
+                     suggestionPrefix="Generate story summary suggestions"
+                     disabled={!storyData.genre}
                  />
             </div>
             {/* Optionally add fields like Target Audience, Tone, Theme later */}

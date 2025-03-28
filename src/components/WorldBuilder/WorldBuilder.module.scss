@@ -78,7 +78,7 @@
 .locationItem {
     display: grid;
     // Grid layout: Name | Description | Remove Button
-    grid-template-columns: minmax(150px, 1fr) 3fr auto;
+    grid-template-columns: minmax(150px, 1fr) 1fr 3fr 1fr auto;
     gap: 10px;
     align-items: start; // Align items to the top of their grid cell
     padding: 10px;
