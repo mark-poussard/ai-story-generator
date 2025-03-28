@@ -44,10 +44,10 @@ const PlotBuilder: React.FC = () => {
     };
 
     // --- Prompt Context Generation ---
-    const getContextForAISuggestion = (pointId: string | null): string => {
+    const getAIContext = (pointId: string | null): string => {
         let context = `Current story genre: ${storyData.genre}. Summary: ${storyData.briefSummary || 'Not specified'}.\n`;
         if(storyData.characters.length > 0) {
-            context += `Characters involved: ${storyData.characters.map(c => c.name).join(', ')}.\n`;
+            context += `Characters involved: ${storyData.characters.map(c => `${c.name} (${c.role})`).join(', ')}.\n`;
         }
         if(storyData.plotPoints.length > 0) {
              context += `Previous plot points:\n${storyData.plotPoints
@@ -95,7 +95,7 @@ const PlotBuilder: React.FC = () => {
                                     rows={5}
                                 ></textarea>
                                 <AIHelperButton
-                                     promptContext={getContextForAISuggestion(pp.id)}
+                                     promptContext={getAIContext(pp.id)}
                                      onSuggestion={(suggestion) => handleSuggestion(pp.id, 'details', suggestion)}
                                      buttonText="Suggest Details"
                                      suggestionPrefix="Based on the story context, suggest specific details or events for this plot point:"
@@ -140,7 +140,7 @@ const PlotBuilder: React.FC = () => {
                     rows={3}
                  />
                  <AIHelperButton
-                     promptContext={getContextForAISuggestion(null)} // Context for the *new* point
+                     promptContext={getAIContext(null)} // Context for the *new* point
                      onSuggestion={(suggestion) => handleSuggestion(null, 'details', suggestion)}
                      buttonText="Suggest Details"
                      disabled={!newPlotPoint.summary}

@@ -44,9 +44,12 @@ const WorldBuilder: React.FC = () => {
         updateWorld('locations', currentLocations);
     };
 
-    // --- Prompt Context ---
+    const getGenericAIContext = () => {
+        return `Story Genre: ${storyData.genre}. Brief Summary: ${storyData.briefSummary || 'None'}.\n`;
+    }
+
     const getAIContext = (field: KnownWorldField): string => {
-        let context = `Story Genre: ${storyData.genre}. Brief Summary: ${storyData.briefSummary || 'None'}.\n`;
+        let context = getGenericAIContext();
         if (field !== 'settingDescription' && storyData.world.settingDescription) {
             context += `Setting Description: ${storyData.world.settingDescription}\n`;
         }
@@ -56,11 +59,8 @@ const WorldBuilder: React.FC = () => {
          if (field !== 'technologyLevel' && storyData.world.technologyLevel) {
             context += `Existing Tech Level: ${storyData.world.technologyLevel}\n`;
         }
-        // Add character info if relevant?
-        // context += `Main Characters: ${storyData.characters.map(c => c.name).join(', ')}\n`;
         return context;
     }
-
 
     return (
         <div className={styles.worldBuilder}>
@@ -124,7 +124,7 @@ const WorldBuilder: React.FC = () => {
             {/* Dynamic Locations Example */}
             <div className={styles.locationsSection}>
                 <h3>Key Locations</h3>
-                 {(storyData.world.locations || []).length === 0 && <p>No specific locations added yet.</p>}
+                {(storyData.world.locations || []).length === 0 && <p>No specific locations added yet.</p>}
                 {(storyData.world.locations || []).map((loc, index) => (
                     <div key={index} className={styles.locationItem}>
                         <input
@@ -141,8 +141,6 @@ const WorldBuilder: React.FC = () => {
                             rows={2}
                              className={styles.locationDesc}
                         />
-                        {/* AI Helper for location description? */}
-                         {/* <AIHelperButton ... /> */}
                         <button
                              onClick={() => handleRemoveLocation(index)}
                              className={styles.removeLocationButton}

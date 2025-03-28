@@ -36,13 +36,41 @@ const CharacterBuilder: React.FC = () => {
 
     const startEditing = (character: Character) => {
         setEditingId(character.id);
-        // Could potentially copy character data to a separate editing state
-        // for better cancellation, but direct update via context is simpler for now.
     };
 
     const cancelEditing = () => {
         setEditingId(null);
     };
+
+    const getGenericAIContext = (): string => {
+        return `Current story genre: ${storyData.genre}. Summary: ${storyData.briefSummary || 'Not specified'}.\n`;
+    }
+
+    const getNameAIContext = () => {
+        let context = getGenericAIContext();
+        if(storyData.characters.length > 0) {
+            context += `Current characters are ${storyData.characters.map(c => `${c.name}`).join(', ')}.\n`;
+        }
+        return context + `Generate name suggestions for a new character.`;
+    }
+
+    const getRoleAIContext = () => {
+        let context = getGenericAIContext();
+        const newCharacterNamePrompt = newCharacter.name ? `called ${newCharacter.name}` : undefined;
+        return context + `Generate role suggestions for a new character ${newCharacterNamePrompt || ''}, suggestions should be 5 words maximum.`;
+    }
+
+    const getDescriptionAIContext = () => {
+        let context = getGenericAIContext();
+        if(storyData.characters.length > 0) {
+            context += `Characters involved: ${storyData.characters.map(c => `${c.name}: ${c.role}`).join(', ')}.\n`;
+        }
+
+        const newCharacterNamePrompt = newCharacter.name ? `named ${newCharacter.name}` : undefined;
+        const newCharacterRolePrompt = newCharacter.role ? `whose role is ${newCharacter.role}` : undefined;
+
+        return context + `Generate a character description for a new character ${newCharacterNamePrompt || ''} ${newCharacterRolePrompt || ''}.`;
+    }
 
     return (
         <div className={styles.characterBuilder}>
@@ -110,12 +138,23 @@ const CharacterBuilder: React.FC = () => {
                     placeholder="Name"
                     required
                 />
+                <AIHelperButton
+                    promptContext={getNameAIContext()}
+                    onSuggestion={(suggestion) => handleSuggestion(null, 'name', suggestion)}
+                    buttonText="Suggest Name"
+                />
                 <input
                     type="text"
                     name="role"
                     value={newCharacter.role}
                     onChange={handleInputChange}
                     placeholder="Role"
+                />
+                <AIHelperButton
+                    promptContext={getRoleAIContext()}
+                    onSuggestion={(suggestion) => handleSuggestion(null, 'role', suggestion)}
+                    buttonText="Suggest Role"
+                    disabled={!newCharacter.name} // Disable if no context
                 />
                 <textarea
                     name="description"
@@ -125,10 +164,10 @@ const CharacterBuilder: React.FC = () => {
                     rows={3}
                  />
                  <AIHelperButton
-                     promptContext={`Generate a character description for a new ${storyData.genre} character named ${newCharacter.name || '[Unnamed]'} whose role is ${newCharacter.role || '[No Role]'}.`}
+                     promptContext={getDescriptionAIContext()}
                      onSuggestion={(suggestion) => handleSuggestion(null, 'description', suggestion)}
                      buttonText="Suggest Description"
-                     disabled={!newCharacter.name && !newCharacter.role} // Disable if no context
+                     disabled={!newCharacter.name || !newCharacter.role} // Disable if no context
                  />
                 <button type="submit">Add Character</button>
             </form>
