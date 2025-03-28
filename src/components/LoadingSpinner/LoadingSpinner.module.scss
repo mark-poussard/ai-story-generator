@@ -1,0 +1,31 @@
+@use '../../styles/variables' as *;
+
+.spinnerContainer {
+  display: inline-flex; // Changed to inline-flex for better embedding
+  align-items: center;
+  gap: 8px; // Space between spinner and text
+  color: $primary-color; // Spinner color
+}
+
+.spinner {
+  border: 4px solid rgba(0, 0, 0, 0.1);
+  border-left-color: currentColor; // Use container color
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+.spinnerText {
+    font-size: 0.9em;
+    color: $text-color; // Separate color for text if needed
+}
+
+
+// Sizes
+.spinnerContainer.small .spinner { width: 16px; height: 16px; border-width: 2px; }
+.spinnerContainer.medium .spinner { width: 24px; height: 24px; border-width: 3px; }
+.spinnerContainer.large .spinner { width: 40px; height: 40px; border-width: 4px; }
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}

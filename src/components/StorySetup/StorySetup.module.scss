@@ -1,0 +1,76 @@
+@use '../../styles/variables' as *;
+@use '../../styles/mixins';
+@use 'sass:color';
+
+.storySetup {
+  padding: 20px;
+  background-color: #fff;
+  border-radius: $border-radius;
+  margin-bottom: 20px;
+  border: 1px solid $border-color;
+  max-width: 700px; // Limit width slightly
+  margin-left: auto;
+  margin-right: auto;
+
+
+  > p { // Top level paragraph instruction
+    margin-bottom: 25px;
+    font-size: 0.95em;
+    color: color.scale($text-color, $lightness: -10%);
+  }
+
+  h2 {
+    color: $primary-color;
+    margin-top: 0;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+}
+
+.formGroup {
+  margin-bottom: 25px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px; // Space between label, input, and helper button
+
+  label {
+    font-weight: 600;
+    font-size: 1em;
+    margin-bottom: 2px;
+    color: color.scale($text-color, $lightness: -5%);
+  }
+
+  input[type="text"],
+  textarea,
+  select {
+    width: 100%;
+    padding: 10px 12px; // Slightly more padding
+    border: 1px solid $border-color;
+    border-radius: $border-radius;
+    font-size: 1em;
+    box-sizing: border-box; // Include padding in width
+    line-height: 1.5;
+    background-color: #fff; // Ensure select background is white
+  }
+
+   select {
+      // Appearance for cross-browser consistency (optional)
+      // appearance: none;
+      // background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+      // background-repeat: no-repeat;
+      // background-position: right 1rem center;
+      // background-size: 1em;
+      // padding-right: 2.5rem; // Make space for arrow
+   }
+
+  textarea {
+    resize: vertical;
+    min-height: 80px;
+  }
+
+  // Position AI Helper button nicely
+  > :global(.aiHelper) { // Target the AIHelperButton component wrapper
+      margin-top: 5px;
+      align-self: flex-start; // Don't let it stretch
+  }
+}

@@ -1,0 +1,48 @@
+@use '../../styles/variables' as *;
+@use 'sass:color';
+
+.aiHelper {
+    display: inline-block; // Allow button and error to coexist
+    position: relative; // For potential absolute positioning of error/tooltip
+}
+
+.aiButton {
+    padding: 5px 10px;
+    font-size: 0.85em;
+    background-color: color.scale($secondary-color, $lightness: 25%);
+    color: color.scale($secondary-color, $lightness: -20%);
+    border: 1px solid color.scale($secondary-color, $lightness: 10%);
+    border-radius: $border-radius;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: inline-flex; // To align spinner and text
+    align-items: center;
+    gap: 5px;
+
+    &:hover:not(:disabled) {
+        background-color: color.scale($secondary-color, $lightness: 15%);
+        border-color: $secondary-color;
+    }
+
+    &:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+        background-color: color.scale($secondary-color, $lightness: 30%);
+    }
+
+     // Style spinner when inside the button
+     :global(.spinnerContainer.small) { // Target small spinner specifically
+        color: inherit !important; // Inherit button color
+     }
+}
+
+.error {
+    display: block; // Show error below button
+    font-size: 0.8em;
+    color: $error-color;
+    margin-top: 4px;
+    // position: absolute; // Alternative: position below button
+    // bottom: -20px;
+    // left: 0;
+    // white-space: nowrap;
+}

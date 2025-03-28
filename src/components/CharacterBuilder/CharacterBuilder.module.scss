@@ -1,0 +1,138 @@
+@use '../../styles/variables' as *;
+@use '../../styles/mixins'; // If you create any mixins
+@use 'sass:color';
+
+.characterBuilder {
+  padding: 20px;
+  background-color: #fff;
+  border-radius: $border-radius;
+  margin-bottom: 20px;
+  border: 1px solid $border-color;
+
+  h2, h3 {
+    color: $primary-color;
+    margin-top: 0;
+    margin-bottom: 15px;
+  }
+}
+
+.characterList {
+  margin-bottom: 30px;
+  display: grid;
+  gap: 15px;
+  // Responsive grid: 1 column on small screens, 2 on medium, etc.
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+}
+
+.characterCard {
+  border: 1px solid color.scale($border-color, $lightness: 5%);
+  padding: 15px;
+  border-radius: $border-radius;
+  background-color: $background-color; // Slightly different background
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; // Push buttons to the bottom if needed
+
+  h3 {
+    color: color.scale($primary-color, $lightness: -10%);
+    margin-top: 0;
+    margin-bottom: 10px;
+    font-size: 1.1em;
+  }
+
+  p {
+    margin: 5px 0 10px;
+    font-size: 0.95em;
+    line-height: 1.5;
+     strong {
+        font-weight: 600;
+        margin-right: 5px;
+     }
+  }
+
+  button { // General button styling within the card
+    margin-top: 10px;
+    margin-right: 5px;
+    padding: 5px 10px;
+    font-size: 0.9em;
+    cursor: pointer;
+    border-radius: $border-radius;
+    border: 1px solid transparent;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+  }
+
+  .editButton {
+      background-color: $secondary-color;
+      color: white;
+       &:hover { background-color: color.scale($secondary-color, $lightness: -10%); }
+  }
+  .removeButton {
+      background-color: color.scale($error-color, $lightness: 10%);
+      color: white;
+       &:hover { background-color: $error-color; }
+  }
+  .cancelButton { // Specific to edit mode
+    background-color: #ccc;
+    &:hover { background-color: #bbb; }
+  }
+
+}
+
+.editForm {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  input, textarea {
+    width: 100%; // Take full width within the form
+    padding: 8px;
+    border: 1px solid $border-color;
+    border-radius: $border-radius;
+    font-size: 0.95em;
+    box-sizing: border-box; // Include padding in width calculation
+  }
+
+   textarea {
+        resize: vertical; // Allow vertical resizing
+        min-height: 80px;
+    }
+
+}
+
+
+.addForm {
+  border-top: 1px solid $border-color;
+  padding-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-width: 500px; // Limit width of the add form
+
+  input, textarea {
+    padding: 10px;
+    border: 1px solid $border-color;
+    border-radius: $border-radius;
+    font-size: 1em;
+  }
+
+  textarea {
+      resize: vertical;
+      min-height: 60px;
+  }
+
+  button[type="submit"] {
+    padding: 10px 15px;
+    background-color: $primary-color;
+    color: white;
+    border: none;
+    border-radius: $border-radius;
+    cursor: pointer;
+    font-size: 1em;
+    align-self: flex-start; // Don't stretch full width
+    transition: background-color 0.2s ease;
+
+    &:hover {
+      background-color: color.scale($primary-color, $lightness: -10%);
+    }
+  }
+}

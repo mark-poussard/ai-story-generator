@@ -1,0 +1,135 @@
+@use '../../styles/variables' as *;
+@use '../../styles/mixins';
+@use 'sass:color';
+
+.worldBuilder {
+  padding: 20px;
+  background-color: #fff;
+  border-radius: $border-radius;
+  margin-bottom: 20px;
+  border: 1px solid $border-color;
+
+  > p { // Top level paragraph instruction
+    margin-bottom: 25px;
+    font-size: 0.95em;
+    color: color.scale($text-color, $lightness: -10%);
+  }
+
+  h2, h3 {
+    color: $primary-color;
+    margin-top: 0;
+    margin-bottom: 15px;
+  }
+
+  h3 { // Sub-sections like Locations
+    margin-top: 25px;
+    border-bottom: 1px solid $border-color;
+    padding-bottom: 8px;
+    font-size: 1.1em;
+  }
+}
+
+.formGroup {
+  margin-bottom: 25px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px; // Space between label, input, and helper button
+
+  label {
+    font-weight: 600;
+    font-size: 1em;
+    margin-bottom: 2px;
+    color: color.scale($text-color, $lightness: -5%);
+  }
+
+  input[type="text"],
+  textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid $border-color;
+    border-radius: $border-radius;
+    font-size: 1em;
+    box-sizing: border-box; // Include padding in width
+    line-height: 1.5;
+  }
+
+  textarea {
+    resize: vertical;
+    min-height: 80px;
+  }
+
+  // Position AI Helper button nicely
+  > :global(.aiHelper) { // Target the AIHelperButton component wrapper
+      margin-top: 5px;
+      align-self: flex-start; // Don't let it stretch
+  }
+}
+
+// Locations Styling
+.locationsSection {
+    margin-top: 30px;
+    > p { // "No locations" message
+        font-style: italic;
+        color: #777;
+        font-size: 0.9em;
+    }
+}
+
+.locationItem {
+    display: grid;
+    // Grid layout: Name | Description | Remove Button
+    grid-template-columns: minmax(150px, 1fr) 3fr auto;
+    gap: 10px;
+    align-items: start; // Align items to the top of their grid cell
+    padding: 10px;
+    border: 1px dashed color.scale($border-color, $lightness: 10%);
+    border-radius: $border-radius;
+    margin-bottom: 10px;
+    background-color: color.scale($background-color, $lightness: 1%);
+
+     input, textarea {
+        padding: 8px;
+        font-size: 0.95em;
+        border: 1px solid color.scale($border-color, $lightness: 5%);
+        border-radius: $border-radius;
+        width: 100%;
+        box-sizing: border-box;
+    }
+     textarea {
+        resize: vertical;
+        min-height: 40px; // Smaller default height
+    }
+}
+
+.removeLocationButton {
+    background-color: transparent;
+    border: none;
+    color: $error-color;
+    font-size: 1.5em; // Make 'x' larger
+    cursor: pointer;
+    padding: 0 5px;
+    line-height: 1; // Adjust vertical alignment if needed
+    margin-top: 5px; // Align with top of input/textarea
+    opacity: 0.7;
+    transition: opacity 0.2s ease;
+
+     &:hover {
+        opacity: 1;
+    }
+}
+
+.addLocationButton {
+    margin-top: 10px;
+    padding: 8px 12px;
+    font-size: 0.9em;
+    background-color: color.scale($primary-color, $lightness: 40%);
+    color: color.scale($primary-color, $lightness: -10%);
+    border: 1px dashed color.scale($primary-color, $lightness: -10%);
+    border-radius: $border-radius;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+
+     &:hover {
+        background-color: color.scale($primary-color, $lightness: 35%);
+    }
+}

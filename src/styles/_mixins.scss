@@ -1,0 +1,27 @@
+@mixin button-reset {
+    border: none;
+    margin: 0;
+    padding: 0;
+    width: auto;
+    overflow: visible;
+    background: transparent;
+    color: inherit;
+    font: inherit;
+    line-height: normal;
+    -webkit-font-smoothing: inherit;
+    -moz-osx-font-smoothing: inherit;
+    -webkit-appearance: none;
+  
+    &::-moz-focus-inner {
+      border: 0;
+      padding: 0;
+    }
+  }
+  
+  @mixin card-base {
+    background-color: #fff;
+    border: 1px solid $border-color;
+    border-radius: $border-radius;
+    padding: 15px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+  }

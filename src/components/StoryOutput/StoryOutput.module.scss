@@ -1,0 +1,136 @@
+@use '../../styles/variables' as *;
+@use '../../styles/mixins';
+@use 'sass:color';
+
+.storyOutput {
+  padding: 20px 30px; // More padding
+  background-color: #fff;
+  border-radius: $border-radius;
+  margin-bottom: 20px;
+  border: 1px solid $border-color;
+  // max-width: 900px; // Allow wider output
+  margin-left: auto;
+  margin-right: auto;
+
+  h2 {
+    color: $primary-color;
+    margin-top: 0;
+    margin-bottom: 10px;
+    text-align: center;
+  }
+
+  > p { // Instruction text
+    text-align: center;
+    margin-bottom: 20px;
+    color: color.scale($text-color, $lightness: -15%);
+  }
+}
+
+.promptPreview {
+    margin-bottom: 20px;
+    border: 1px dashed $border-color;
+    border-radius: $border-radius;
+    background-color: color.scale($background-color, $lightness: 2%);
+
+    summary {
+        padding: 10px 15px;
+        cursor: pointer;
+        font-weight: 600;
+        color: color.scale($primary-color, $lightness: -5%);
+        &:hover {
+            background-color: color.scale($background-color, $lightness: 1%);
+        }
+    }
+    pre {
+        padding: 0 15px 15px 15px;
+        white-space: pre-wrap;
+        word-wrap: break-word;
+        max-height: 300px;
+        overflow-y: auto;
+        background-color: transparent;
+        border: none;
+        font-size: 0.85em;
+        color: #555;
+    }
+}
+
+
+.generateButton {
+  display: block; // Make it a block element
+  margin: 20px auto; // Center the button
+  padding: 12px 25px;
+  font-size: 1.1em;
+  font-weight: bold;
+  background-color: $success-color;
+  color: white;
+  border: none;
+  border-radius: $border-radius;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  min-width: 180px; // Give it some minimum width
+  text-align: center;
+
+  &:hover:not(:disabled) {
+    background-color: color.scale($success-color, $lightness: -10%);
+  }
+
+  &:disabled {
+    background-color: color.scale($success-color, $lightness: 20%);
+    cursor: not-allowed;
+  }
+
+   // Style loading spinner inside button if needed
+   :global(.spinnerContainer) { // Target nested spinner
+       color: white !important; // Ensure spinner is visible
+       margin: 0 auto; // Center spinner if text is hidden
+   }
+}
+
+.error {
+    color: $error-color;
+    background-color: color.scale($error-color, $lightness: 40%);
+    border: 1px solid color.scale($error-color, $lightness: 20%);
+    padding: 10px 15px;
+    border-radius: $border-radius;
+    margin-top: 20px;
+    text-align: center;
+}
+
+.storyResult {
+  margin-top: 30px;
+  border-top: 1px solid $border-color;
+  padding-top: 20px;
+
+  h3 {
+    margin-bottom: 15px;
+    color: color.scale($primary-color, $lightness: -15%);
+  }
+}
+
+.storyText {
+  background-color: color.scale($background-color, $lightness: 2%);
+  border: 1px solid color.scale($border-color, $lightness: 5%);
+  padding: 15px 20px;
+  border-radius: $border-radius;
+  white-space: pre-wrap; // Preserve whitespace and line breaks
+  word-wrap: break-word; // Break long words
+  font-family: 'Courier New', Courier, monospace; // Monospace font often good for code/output
+  font-size: 1em;
+  line-height: 1.6;
+  max-height: 60vh; // Limit height and make scrollable
+  overflow-y: auto;
+}
+
+// Style global loading spinner used directly in this component
+:global(.spinnerContainer) {
+    display: flex; // Use flex for centering text below spinner
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+    color: $primary-color; // Use primary color for spinner itself
+    :global(.spinnerText) { // Target the text specifically
+        margin-top: 10px;
+        font-size: 1em;
+        color: $text-color; // Normal text color for the message
+    }
+}

@@ -1,0 +1,83 @@
+@use '../../styles/variables' as *;
+@use 'sass:color';
+
+.apiKeyContainer {
+  padding: 20px;
+  border: 1px solid $border-color;
+  background-color: #fff;
+  border-radius: $border-radius;
+  max-width: 600px;
+  margin: 20px auto;
+
+  h2 {
+    margin-top: 0;
+    color: $primary-color;
+  }
+}
+
+.inputGroup {
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px; // Spacing between label, input, button
+
+     label {
+        flex-shrink: 0; // Prevent label from shrinking
+        width: 80px; // Fixed width for alignment
+     }
+}
+
+.apiKeyInput {
+  flex-grow: 1; // Allow input to take remaining space
+  padding: 8px 12px;
+  border: 1px solid $border-color;
+  border-radius: $border-radius;
+  font-size: 1rem;
+}
+
+.saveButton {
+  padding: 8px 15px;
+  background-color: $primary-color;
+  color: white;
+  border: none;
+  border-radius: $border-radius;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+
+  &:hover {
+    background-color: color.scale($primary-color, $lightness: -10%);
+  }
+}
+
+.warning, .error, .success {
+    padding: 10px;
+    margin-top: 15px;
+    border-radius: $border-radius;
+    border: 1px solid transparent;
+}
+
+.warning {
+  color: color.scale($secondary-color, $lightness: -20%);
+  background-color: color.scale($secondary-color, $lightness: 35%);
+  border-color: color.scale($secondary-color, $lightness: -5%);
+   strong { color: color.scale($secondary-color, $lightness: -30%); }
+}
+
+.error {
+  color: color.scale($error-color, $lightness: -10%);
+  background-color: color.scale($error-color, $lightness: 35%);
+  border-color: $error-color;
+}
+.success {
+   color: color.scale($success-color, $lightness: -10%);
+   background-color: color.scale($success-color, $lightness: 45%);
+   border-color: $success-color;
+}
+
+a {
+    color: $primary-color;
+    text-decoration: none;
+     &:hover {
+        text-decoration: underline;
+     }
+}

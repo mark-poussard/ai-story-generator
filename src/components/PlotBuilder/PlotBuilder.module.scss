@@ -1,0 +1,164 @@
+@use '../../styles/variables' as *;
+@use '../../styles/mixins';
+@use 'sass:color';
+
+.plotBuilder {
+  padding: 20px;
+  background-color: #fff;
+  border-radius: $border-radius;
+  margin-bottom: 20px;
+  border: 1px solid $border-color;
+
+  > p { // Top level paragraph instruction
+    margin-bottom: 20px;
+    font-size: 0.95em;
+    color: color.scale($text-color, $lightness: -10%);
+  }
+
+  h2, h3 {
+    color: $primary-color;
+    margin-top: 0;
+    margin-bottom: 15px;
+  }
+}
+
+.plotList {
+  margin-bottom: 30px;
+  display: flex;
+  flex-direction: column; // Stack plot points vertically
+  gap: 20px;
+}
+
+.plotCard {
+  border: 1px solid color.scale($border-color, $lightness: 5%);
+  padding: 15px 20px; // More horizontal padding
+  border-radius: $border-radius;
+  background-color: $background-color;
+
+  h3 {
+    color: color.scale($primary-color, $lightness: -10%);
+    margin-top: 0;
+    margin-bottom: 10px;
+    font-size: 1.15em;
+    font-weight: 600;
+  }
+
+  p {
+    margin: 5px 0 10px;
+    font-size: 1em; // Slightly larger text for plot
+    line-height: 1.6;
+     strong {
+        font-weight: 600;
+        margin-right: 5px;
+        color: $text-color;
+     }
+  }
+
+  .plotDetails {
+      white-space: pre-wrap; // Preserve line breaks in details
+      background-color: color.scale($background-color, $lightness: 2%);
+      padding: 10px;
+      border-radius: $border-radius;
+      border: 1px dashed color.scale($border-color, $lightness: 10%);
+      margin-top: 10px;
+  }
+
+  .noDetails {
+    color: #888;
+    font-size: 0.9em;
+  }
+
+  .buttonGroup {
+      margin-top: 15px;
+      display: flex;
+      gap: 10px;
+  }
+
+  button { // General button styling within the card
+    padding: 6px 12px;
+    font-size: 0.9em;
+    cursor: pointer;
+    border-radius: $border-radius;
+    border: 1px solid transparent;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+  }
+
+  .editButton {
+      background-color: $secondary-color;
+      color: white;
+       &:hover { background-color: color.scale($secondary-color, $lightness: -10%); }
+  }
+  .removeButton {
+      background-color: color.scale($error-color, $lightness: 10%);
+      color: white;
+       &:hover { background-color: $error-color; }
+  }
+   .cancelButton { // Specific to edit mode
+    background-color: #ccc;
+    &:hover { background-color: #bbb; }
+  }
+}
+
+.editForm {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+
+  label {
+    font-weight: 600;
+    font-size: 0.9em;
+    margin-bottom: -5px; // Reduce space below label
+  }
+
+  input, textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid $border-color;
+    border-radius: $border-radius;
+    font-size: 1em;
+    box-sizing: border-box;
+  }
+
+   textarea {
+        resize: vertical;
+        min-height: 100px;
+    }
+}
+
+
+.addForm {
+  border-top: 1px solid $border-color;
+  padding-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  // max-width: 600px; // Maybe allow add form to be wider
+
+  input, textarea {
+    padding: 10px;
+    border: 1px solid $border-color;
+    border-radius: $border-radius;
+    font-size: 1em;
+  }
+
+  textarea {
+      resize: vertical;
+      min-height: 60px;
+  }
+
+  button[type="submit"] {
+    padding: 10px 15px;
+    background-color: $primary-color;
+    color: white;
+    border: none;
+    border-radius: $border-radius;
+    cursor: pointer;
+    font-size: 1em;
+    align-self: flex-start;
+    transition: background-color 0.2s ease;
+
+    &:hover {
+      background-color: color.scale($primary-color, $lightness: -10%);
+    }
+  }
+}

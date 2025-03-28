@@ -1,0 +1,92 @@
+@use 'variables' as *;
+@use 'sass:color';
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 16px; // Base font size
+}
+
+body {
+  margin: 0;
+  font-family: $font-family, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  background-color: $background-color;
+  color: $text-color;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  margin-top: 1.5em;
+  margin-bottom: 0.8em;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+h1 { font-size: 2.2rem; }
+h2 { font-size: 1.8rem; }
+h3 { font-size: 1.4rem; }
+h4 { font-size: 1.1rem; }
+
+p {
+  margin-top: 0;
+  margin-bottom: 1rem;
+}
+
+a {
+  color: $primary-color;
+  text-decoration: none;
+  transition: color 0.2s ease;
+
+  &:hover {
+    color: color.scale($primary-color, $lightness: -15%);
+    text-decoration: underline;
+  }
+}
+
+input,
+textarea,
+select,
+button {
+  font-family: inherit; // Ensure form elements inherit body font
+  font-size: 1rem;
+}
+
+button {
+    cursor: pointer;
+}
+
+// Basic form styling (can be overridden by modules)
+input[type="text"],
+input[type="password"],
+input[type="email"],
+textarea,
+select {
+  display: block;
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid $border-color;
+  border-radius: $border-radius;
+  background-color: #fff;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+
+  &:focus {
+    outline: none;
+    border-color: $primary-color;
+    box-shadow: 0 0 0 2px rgba($primary-color, 0.2);
+  }
+}
+
+textarea {
+    resize: vertical;
+}
+
+// Utility classes (optional)
+.text-center { text-align: center; }
+.error-text { color: $error-color; }
+.success-text { color: $success-color; }
