@@ -12,7 +12,7 @@ import styles from './App.module.scss'; // Use CSS Modules for App-specific styl
 type AppStep = 'apiKey' | 'setup' | 'characters' | 'world' | 'plot' | 'generate';
 
 function AppContent() {
-    const { storyData, isAIInitialized, aiError } = useStoryContext();
+    const { storyData, isAIInitialized, aiError, resetApiKey } = useStoryContext();
     const [currentStep, setCurrentStep] = useState<AppStep>(storyData.apiKey && isAIInitialized ? 'setup' : 'apiKey');
 
     useEffect(() => {
@@ -23,11 +23,6 @@ function AppContent() {
             setCurrentStep('apiKey'); // Stay on API key input
         }
     }, [storyData.apiKey, isAIInitialized]);
-    
-    const handleApiKeySet = () => {
-       //No action needed anymore due to useEffect doing the change
-
-    };
 
     const nextStep = () => {
         switch (currentStep) {
@@ -60,7 +55,7 @@ function AppContent() {
 
             <main className={styles.mainContent}>
                 {currentStep === 'apiKey' && (
-                    <ApiKeyInput onApiKeySet={handleApiKeySet} />
+                    <ApiKeyInput />
                 )}
 
                 {currentStep !== 'apiKey' && !isAIInitialized && (
@@ -94,7 +89,8 @@ function AppContent() {
             </main>
 
             <footer className={styles.footer}>
-                 {currentStep !== 'apiKey' && <button onClick={() => setCurrentStep('apiKey')} className={styles.footerLink}>Change API Key</button>}
+                <p>Powered by Google Generative AI</p>
+                 {currentStep !== 'apiKey' && <button onClick={() => resetApiKey()} className={styles.footerLink}>Change API Key</button>}
             </footer>
         </div>
     );

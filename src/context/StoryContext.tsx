@@ -13,7 +13,8 @@ interface StoryContextProps {
     removePlotPoint: (id: string) => void;
     updateWorld: (field: keyof World, value: any) => void;
     resetStory: () => void;
-    setApiKey: (key: string) => void;
+    setApiKey: (key: string, save : boolean) => void;
+    resetApiKey: () => void;
     generateSuggestions: (prompt: string) => Promise<string[] | null>;
     isAILoading: boolean;
     aiError: string | null;
@@ -30,11 +31,18 @@ export const StoryProvider: React.FC<{ children: ReactNode }> = ({ children }) =
 
     const { generateContent, loading: isAILoading, error: aiError, isInitialized: isAIInitialized } = useGeminiAI(storyData.apiKey);
 
-    const setApiKey = useCallback((key: string) => {
+    const setApiKey = useCallback((key: string, save: boolean) => {
         // Basic security warning
-        console.warn("Storing API Key in localStorage is insecure for production applications.");
-        localStorage.setItem('geminiApiKey', key);
+        if(save){
+            console.warn("Storing API Key in localStorage is insecure for production applications.");
+            localStorage.setItem('geminiApiKey', key);
+        }
         setStoryData(prev => ({ ...prev, apiKey: key }));
+    }, []);
+
+    const resetApiKey = useCallback(() => {
+        setStoryData(prev => ({ ...prev, apiKey: undefined }));
+        localStorage.removeItem('geminiApiKey');
     }, []);
 
     const updateStoryData = useCallback((field: keyof StoryData, value: any) => {
@@ -114,6 +122,7 @@ export const StoryProvider: React.FC<{ children: ReactNode }> = ({ children }) =
         updateWorld,
         resetStory,
         setApiKey,
+        resetApiKey,
         generateSuggestions: generateContent, // Pass down the hook's function
         isAILoading,
         aiError,

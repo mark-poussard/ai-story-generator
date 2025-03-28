@@ -27,6 +27,18 @@
      }
 }
 
+.saveKeyInputGroup {
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px; // Spacing between label, input, button
+
+     label {
+        flex-shrink: 0; // Prevent label from shrinking
+        width: 250px; // Fixed width for alignment
+     }
+}
+
 .apiKeyInput {
   flex-grow: 1; // Allow input to take remaining space
   padding: 8px 12px;

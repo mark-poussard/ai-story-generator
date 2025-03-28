@@ -3,12 +3,12 @@ import { useStoryContext } from '../../context/StoryContext';
 import styles from './ApiKeyInput.module.scss'; // Use CSS Modules
 
 interface ApiKeyInputProps {
-    onApiKeySet: () => void; // Callback when key is potentially set successfully
 }
 
-const ApiKeyInput: React.FC<ApiKeyInputProps> = ({ onApiKeySet }) => {
+const ApiKeyInput: React.FC<ApiKeyInputProps> = ({ }) => {
     const { storyData, setApiKey, aiError, isAIInitialized } = useStoryContext();
     const [key, setKey] = useState(storyData.apiKey || '');
+    const [saveKey, setSaveKey] = useState(false);
     const [localError, setLocalError] = useState<string | null>(null);
 
      // Update local state if context changes (e.g., loaded from localStorage)
@@ -32,18 +32,16 @@ const ApiKeyInput: React.FC<ApiKeyInputProps> = ({ onApiKeySet }) => {
             setLocalError("API Key cannot be empty.");
             return;
         }
-        setApiKey(key.trim());
-        // We don't know immediately if it's valid, the hook will update `isAIInitialized` and `aiError`
-        // Call the callback to potentially trigger navigation in App.tsx
-        onApiKeySet();
+        setApiKey(key.trim(), saveKey);
     };
 
     return (
         <div className={styles.apiKeyContainer}>
             <h2>Enter Your Google AI Studio API Key</h2>
-            <p className={styles.warning}>
-                <strong>Security Warning:</strong> For development purposes only. Avoid committing your API key or deploying this code publicly with the key stored in the browser. Use a backend proxy for production.
-            </p>
+
+            {saveKey && <p className={styles.warning}>
+                <strong>Security Warning:</strong> The API key will be saved in your browser local cache.
+            </p>}
             <div className={styles.inputGroup}>
                 <label htmlFor="apiKey">API Key:</label>
                 <input
@@ -55,6 +53,16 @@ const ApiKeyInput: React.FC<ApiKeyInputProps> = ({ onApiKeySet }) => {
                     className={styles.apiKeyInput}
                 />
                  <button onClick={handleSave} className={styles.saveButton}>Save and Continue</button>
+            </div>
+            <div className={styles.saveKeyInputGroup}>
+                <label htmlFor="saveKey">Save API Key to local storage:</label>
+                <input
+                    type="checkbox" // Use password type to obscure
+                    id="saveKey"
+                    checked={saveKey}
+                    onChange={(e) => setSaveKey(e.target.checked)}
+                    className={styles.apiKeyInput}
+                />
             </div>
             {localError && <p className={styles.error}>{localError}</p>}
             {!localError && isAIInitialized && key && <p className={styles.success}>API Key accepted and AI initialized.</p>}
