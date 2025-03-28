@@ -2,11 +2,12 @@
 @use 'sass:color';
 
 .aiHelper {
-    display: inline-block; // Allow button and error to coexist
-    position: relative; // For potential absolute positioning of error/tooltip
+    display: inline-block;
+    position: relative;
 }
 
 .aiButton {
+    // ... (existing styles) ...
     padding: 5px 10px;
     font-size: 0.85em;
     background-color: color.scale($secondary-color, $lightness: 25%);
@@ -15,7 +16,7 @@
     border-radius: $border-radius;
     cursor: pointer;
     transition: all 0.2s ease;
-    display: inline-flex; // To align spinner and text
+    display: inline-flex;
     align-items: center;
     gap: 5px;
 
@@ -30,19 +31,171 @@
         background-color: color.scale($secondary-color, $lightness: 30%);
     }
 
-     // Style spinner when inside the button
-     :global(.spinnerContainer.small) { // Target small spinner specifically
-        color: inherit !important; // Inherit button color
+     :global(.spinnerContainer.small) {
+        color: inherit !important;
      }
 }
 
 .error {
-    display: block; // Show error below button
+    display: block;
     font-size: 0.8em;
     color: $error-color;
     margin-top: 4px;
-    // position: absolute; // Alternative: position below button
-    // bottom: -20px;
-    // left: 0;
-    // white-space: nowrap;
+}
+
+// --- Modal Styles ---
+.modalOverlay {
+    position: fixed; // Cover the whole screen
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.6); // Semi-transparent background
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000; 
+    padding: 20px; 
+}
+
+.modalContent {
+    background-color: #fff;
+    padding: 20px 30px;
+    border-radius: $border-radius * 2; // Slightly more rounded
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    max-width: 600px; // Limit modal width
+    width: 100%;
+    max-height: 85vh; // Limit modal height
+    display: flex;
+    flex-direction: column; // Stack header and list vertically
+    position: relative; // Needed if close button is absolutely positioned
+}
+
+.modalHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid $border-color;
+    padding-bottom: 10px;
+    margin-bottom: 15px;
+    flex-shrink: 0;
+
+    h3 {
+        margin: 0;
+        font-size: 1.2rem;
+        color: $primary-color;
+    }
+}
+
+.closeButton {
+    background: none;
+    border: none;
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: #888;
+    cursor: pointer;
+    padding: 0 5px;
+    line-height: 1;
+
+    &:hover {
+        color: $text-color;
+    }
+}
+
+.suggestionList {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 15px 0;
+    overflow-y: auto;
+    flex-grow: 1;
+    min-height: 100px;
+}
+
+.suggestionItem {
+    padding: 12px 15px;
+    border-bottom: 1px solid color.scale($border-color, $lightness: 5%);
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    font-size: 0.95em;
+    line-height: 1.5;
+
+    &:last-child {
+        border-bottom: none;
+    }
+
+    &:hover, &:focus {
+        background-color: color.scale($primary-color, $lightness: 45%);
+        outline: none;
+    }
+}
+
+.noSuggestions {
+    padding: 15px;
+    text-align: center;
+    color: #777;
+    font-style: italic;
+}
+
+.refreshingIndicator {
+    padding: 20px;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: $primary-color; // Match spinner color
+
+    // Target spinner text within this context
+    :global(.spinnerContainer .spinnerText) {
+         color: $text-color; // Normal text color for the message
+         margin-top: 8px;
+    }
+}
+
+.modalFooter {
+    border-top: 1px solid $border-color;
+    padding-top: 15px;
+    margin-top: auto; // Pushes footer to the bottom if content is short
+    display: flex;
+    flex-direction: column; // Stack error and button vertically
+    align-items: center; // Center items horizontally
+    gap: 10px; // Space between error and button
+    flex-shrink: 0; // Prevent footer from shrinking
+}
+
+.modalErrorText {
+    color: $error-color;
+    font-size: 0.9em;
+    margin: 0; // Remove default paragraph margin
+    text-align: center;
+}
+
+.refreshButton {
+    padding: 8px 15px;
+    font-size: 0.9em;
+    background-color: color.scale($secondary-color, $lightness: 10%);
+    color: white;
+    border: none;
+    border-radius: $border-radius;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    display: inline-flex; // Align spinner
+    align-items: center;
+    justify-content: center; // Center spinner if text removed
+    gap: 8px;
+    min-width: 180px; // Give it some width
+
+    &:hover:not(:disabled) {
+        background-color: $secondary-color;
+    }
+
+    &:disabled {
+        opacity: 0.7;
+        cursor: not-allowed;
+        background-color: color.scale($secondary-color, $lightness: 25%);
+    }
+
+    // Style spinner inside button
+     :global(.spinnerContainer.small) {
+        color: white !important; // Make spinner visible
+     }
 }

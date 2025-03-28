@@ -4,7 +4,7 @@ import LoadingSpinner from '../LoadingSpinner/LoadingSpinner';
 import styles from './StoryOutput.module.scss';
 
 const StoryOutput: React.FC = () => {
-    const { storyData, generateSuggestion, isAILoading, aiError } = useStoryContext();
+    const { storyData, generateSuggestions: generateSuggestion, isAILoading, aiError } = useStoryContext();
     const [generatedStory, setGeneratedStory] = useState<string | null>(null);
     const [isGenerating, setIsGenerating] = useState(false);
 
@@ -72,7 +72,7 @@ const StoryOutput: React.FC = () => {
         setGeneratedStory(null); // Clear previous story
         const prompt = constructFinalPrompt();
         const result = await generateSuggestion(prompt); // Use the context's generator
-        setGeneratedStory(result);
+        setGeneratedStory(result ? result.join("\n") : '');
         setIsGenerating(false);
     };
 

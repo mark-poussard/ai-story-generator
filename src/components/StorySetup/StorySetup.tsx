@@ -17,11 +17,8 @@ const StorySetup: React.FC = () => {
     };
 
     // Handle updates via AI suggestion
-    const handleSuggestion = (field: keyof StoryData, suggestions: string[]) => {
-         // Append or replace based on preference
-        const currentValue = storyData[field as keyof Omit<StoryData, 'characters' | 'world' | 'plotPoints'>] || ''; // Adjust type based on field
-        const suggestion = suggestions.join(", ");
-        updateStoryData(field, currentValue ? currentValue + '\n\n' + suggestion : suggestion);
+    const handleSuggestion = (field: keyof StoryData, suggestion: string) => {
+        updateStoryData(field, suggestion);
     };
 
      // --- AI Context Generation ---

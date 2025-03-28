@@ -14,7 +14,7 @@ interface StoryContextProps {
     updateWorld: (field: keyof World, value: any) => void;
     resetStory: () => void;
     setApiKey: (key: string) => void;
-    generateSuggestion: (prompt: string) => Promise<string[] | null>;
+    generateSuggestions: (prompt: string) => Promise<string[] | null>;
     isAILoading: boolean;
     aiError: string | null;
     isAIInitialized: boolean;
@@ -114,7 +114,7 @@ export const StoryProvider: React.FC<{ children: ReactNode }> = ({ children }) =
         updateWorld,
         resetStory,
         setApiKey,
-        generateSuggestion: generateContent, // Pass down the hook's function
+        generateSuggestions: generateContent, // Pass down the hook's function
         isAILoading,
         aiError,
         isAIInitialized,

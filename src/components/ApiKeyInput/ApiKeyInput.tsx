@@ -27,7 +27,7 @@ const ApiKeyInput: React.FC<ApiKeyInputProps> = ({ onApiKeySet }) => {
 
 
     const handleSave = () => {
-         setLocalError(null); // Clear previous errors
+        setLocalError(null); // Clear previous errors
         if (!key.trim()) {
             setLocalError("API Key cannot be empty.");
             return;
