@@ -89,7 +89,7 @@ function AppContent() {
             </main>
 
             <footer className={styles.footer}>
-                <p>Powered by Google Generative AI</p>
+                <p>A project by <a href="https://github.com/mark-poussard">Mark Poussard</a></p>
                  {currentStep !== 'apiKey' && <button onClick={() => resetApiKey()} className={styles.footerLink}>Change API Key</button>}
             </footer>
         </div>
